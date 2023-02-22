@@ -6,35 +6,51 @@ public class Chunk : MonoBehaviour
 {
     public MeshRenderer meshRenderer;
     public MeshFilter meshFilter;
- // Start is called before the first frame update
+ 
+    int vertexIndex = 0;
+    List<Vector3> vectices = new List<Vector3> ();
+    List<int> triangles = new List<int> ();
+    List<Vector2> uvs = new List<Vector2> ();
+    // Start is called before the first frame update
     void Start()    {
 
-        int vertexIndex = 0;
-        List<Vector3> vectices = new List<Vector3> ();
-        List<int> triangles = new List<int> ();
-        List<Vector2> uvs = new List<Vector2> ();
+        for (int y = 0; y < VoxelData.chunkHeight; y++){
+            for (int x = 0; x < VoxelData.chunkWidth; x++){
+                for (int z = 0; z < VoxelData.chunkWidth; z++){
+                    AddVoxelDataToChunk (new Vector3 (x, y, z));
+                }
+            }
+        }
+
+        CreateMesh ();
+
+    }
+
+    void AddVoxelDataToChunk (Vector3 pos) {
 
         for (int p = 0; p < 6; p++){
             for (int i = 0; i < 6; i++){
     
                 int triangleIndex = VoxelData.voxelTris [p, i];
-                vectices.Add (VoxelData.voxelVerts [triangleIndex]);
+                vectices.Add (VoxelData.voxelVerts [triangleIndex] + pos);
                 triangles.Add (vertexIndex);
 
-                uvs.Add (Vector2.zero);
+                uvs.Add (VoxelData.voxelUvs [i]);
 
                 vertexIndex++;
 
             }
         }
 
+    }
+
+    void CreateMesh () {
+
         Mesh mesh = new Mesh ();
         mesh.vertices = vectices.ToArray ();
         mesh.triangles = triangles.ToArray ();
         mesh.uv = uvs.ToArray ();
-
         mesh.RecalculateNormals ();
-
         meshFilter.mesh = mesh;
 
     }
