@@ -36,6 +36,7 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
+     <Compile Include="Assets/Scripts/World.cs" />
      <Compile Include="Assets/Scripts/VoxelData.cs" />
      <Compile Include="Assets/Scripts/Chunk.cs" />
     <Reference Include="UnityEngine">
